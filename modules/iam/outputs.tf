@@ -1,9 +1,9 @@
 output "instance_profile_name" {
-  description = "IAM instance profile assigned to EC2 instances"
-  value       = aws_iam_instance_profile.ec2.name
+  description = "Existing AWS Academy instance profile assigned to EC2"
+  value       = data.aws_iam_instance_profile.lab.name
 }
 
 output "role_name" {
-  description = "IAM role assigned to EC2 instances"
-  value       = aws_iam_role.ec2.name
+  description = "Role attached to the AWS Academy instance profile"
+  value       = data.aws_iam_instance_profile.lab.role_name
 }

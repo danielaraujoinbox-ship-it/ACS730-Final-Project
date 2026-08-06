@@ -11,6 +11,5 @@ variable "owner" {
 }
 
 variable "bucket_name" {
-  description = "Private S3 bucket containing the website image"
-  type        = string
+  type = string
 }
