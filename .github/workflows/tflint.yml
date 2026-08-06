@@ -1,0 +1,31 @@
+name: Terraform Security Scan
+
+on:
+  push:
+    branches:
+      - staging
+
+  pull_request:
+    branches:
+      - prod
+
+permissions:
+  contents: read
+
+jobs:
+  tflint:
+    name: TFLint Scan
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up TFLint
+        uses: terraform-linters/setup-tflint@v6
+
+      - name: Initialize TFLint
+        run: tflint --init
+
+      - name: Scan Terraform configuration
+        run: tflint --recursive
