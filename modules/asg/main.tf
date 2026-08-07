@@ -47,7 +47,7 @@ resource "aws_instance" "bastion" {
 }
 
 resource "aws_launch_template" "web" {
-  name_prefix   = "ACS730-${var.environment}-Web-"
+  name = "ACS730-${var.environment}-Web-LT"
   image_id      = data.aws_ami.amazon_linux.id
   instance_type = var.instance_type
   key_name      = var.key_name
@@ -60,48 +60,45 @@ resource "aws_launch_template" "web" {
     var.web_security_group_id
   ]
 
-  user_data = base64encode(<<-USERDATA
+user_data = base64encode(<<-USERDATA
 #!/bin/bash
 
 dnf install -y httpd awscli
+
 systemctl enable httpd
 systemctl start httpd
 
-aws s3 cp \
-  s3://${var.bucket_name}/images/project-image.svg \
-  /var/www/html/project-image.svg
+aws s3 cp s3://${var.bucket_name}/images/daniel_linkedin.png /var/www/html/daniel_linkedin.png
 
 TOKEN=$(curl -X PUT -s \
-  -H "X-aws-ec2-metadata-token-ttl-seconds: 21600" \
-  http://169.254.169.254/latest/api/token)
+-H "X-aws-ec2-metadata-token-ttl-seconds: 21600" \
+http://169.254.169.254/latest/api/token)
 
 INSTANCE_ID=$(curl -s \
-  -H "X-aws-ec2-metadata-token: $TOKEN" \
-  http://169.254.169.254/latest/meta-data/instance-id)
+-H "X-aws-ec2-metadata-token: $TOKEN" \
+http://169.254.169.254/latest/meta-data/instance-id)
 
 cat > /var/www/html/index.html <<HTML
-<!DOCTYPE html>
 <html>
-<head>
-  <title>ACS730 ${var.environment} Environment</title>
-</head>
 <body>
-  <h1>ACS730 Final Project</h1>
-  <h2>${var.environment} Environment</h2>
-  <p>Student: Daniel Araujo</p>
-  <p>EC2 Instance: $INSTANCE_ID</p>
-  <img
-    src="project-image.svg"
-    alt="ACS730 project image"
-    width="700"
-  >
+
+<h1>ACS730 Final Project</h1>
+
+<p>Student: Daniel Araujo</p>
+
+<p>EC2 Instance ID: $INSTANCE_ID</p>
+
+<h2>Image Loaded From S3</h2>
+
+<img src="/daniel_linkedin.png" width="500">
+
 </body>
 </html>
 HTML
 
 systemctl restart httpd
 USERDATA
-  )
+)
 
   tag_specifications {
     resource_type = "instance"
