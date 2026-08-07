@@ -16,30 +16,6 @@ The infrastructure includes:
 - S3 bucket for storing application images
 - IAM role allowing EC2 instances to access S3
 
-## Repository Structure
-
-```
-ACS730-Final-Project
-
-├── environments
-│   ├── dev
-│   ├── staging
-│   └── prod
-│
-├── modules
-│   ├── network
-│   ├── security
-│   ├── alb
-│   ├── asg
-│   └── iam
-│
-├── .github
-│   └── workflows
-│
-├── README.md
-└── daniel_linkedin.png
-```
-
 ## Terraform Environments
 
 The project uses separate Terraform configurations for each environment:
