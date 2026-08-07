@@ -89,9 +89,3 @@ Resources are tagged with:
 - `Environment` - Dev, Staging, or Prod
 - `Owner` - Daniel-Araujo
 - `ManagedBy` - Terraform
-
-## High Availability
-
-The application uses an Application Load Balancer and Auto Scaling Group to maintain availability.
-
-If a web server becomes unavailable, Auto Scaling can replace the instance while the Load Balancer continues directing traffic to healthy servers.
